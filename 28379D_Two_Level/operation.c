@@ -47,32 +47,32 @@ void control_switches(int* top_of_vector_arr, int* top_of_percent_arr){
 void turn_on_switch(int* vector_ptr){
     int vector = *vector_ptr;
     switch(vector){
-        case 1: //+U
+        case POSITIVE_U: //+U
             //printf("+U is on\n");
             activate_positive_u();
             break;
-        case 2: //+V
+        case POSITIVE_V: //+V
             //printf("+V is on\n");
             activate_positive_v();
             break;
-        case 3: //-W
+        case POSITIVE_W: //+W
             //printf("-W is on\n");
-            activate_negative_w();
-            break;
-        case 4: //+W
-            //printf("+W is on\n");
             activate_positive_w();
             break;
-        case 5: //-V
+        case NEGATIVE_W: //-U
+            //printf("+W is on\n");
+            activate_negative_w();
+            break;
+        case NEGATIVE_V: //-V
             //printf("-V is on\n");
             activate_negative_v();
             break;
-        case 6: //-U
+        case NEGATIVE_U: //-U
             //printf("-U is on\n");
             activate_negative_u();
             break;
         case 0:
-        case 7: //zero vector
+        case ZERO_VECTOR: //zero vector
             //printf("zero vector is on\n");
             activate_zero_vector();
             break;

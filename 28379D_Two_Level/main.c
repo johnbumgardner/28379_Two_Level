@@ -7,7 +7,7 @@
 
 
 // Globals
-int control_angle = 45; //location on the unit circle we want modulate to
+int control_angle; //location on the unit circle we want modulate to
 int control_magnitude = 90; //basically percent of maximum
 
 
@@ -16,7 +16,7 @@ int control_magnitude = 90; //basically percent of maximum
 void main(void)
 {
     // Initialize device clock and peripherals
-    Device_init();
+      Device_init();
 
     // Initialize GPIO and configure the GPIO pin as a push-pull output
     Device_initGPIO();
@@ -35,14 +35,26 @@ void main(void)
     EINT;
     ERTM;
 
-    // Compute control parameters to control motor
-    int sector = get_sector(&control_angle);
-    int* array_of_vectors = get_modulated_array(&sector, &control_magnitude);
-    int* percentages = get_percents_to_modulate(&array_of_vectors[0], &control_angle, &control_magnitude);
 
-    // Loop Forever
+
+
     while(1)
     {
-        control_switches(array_of_vectors, percentages);
+
+        for(control_angle = 0; control_angle < AREA_OF_CIRCLE + 1; control_angle = control_angle + 1)
+        {
+            // Compute control parameters to control motor
+            int sector = get_sector(&control_angle);
+            int* array_of_vectors = get_modulated_array(&sector, &control_magnitude);
+            int* percentages = get_percents_to_modulate(&array_of_vectors[0], &control_angle, &control_magnitude);
+            control_switches(array_of_vectors, percentages);
+            if(control_angle == AREA_OF_CIRCLE) //when the end of the circle is reached, start again
+            {
+                control_angle = 0;
+            }
+        }
+
     }
 }
+
+

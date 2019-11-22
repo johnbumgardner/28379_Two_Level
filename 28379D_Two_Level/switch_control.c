@@ -80,14 +80,14 @@ void turn_off_switch_6(){
 }
 
 
-// <001>
+// <100>
 void activate_positive_u(){
-    turn_off_switch_1();
-    turn_on_switch_2();
+    turn_on_switch_1();
+    turn_off_switch_2();
     turn_off_switch_3();
     turn_on_switch_4();
-    turn_on_switch_5();
-    turn_off_switch_6();
+    turn_off_switch_5();
+    turn_on_switch_6();
 }
 // <010>
 void activate_positive_v(){
@@ -100,21 +100,21 @@ void activate_positive_v(){
 }
 // <011>
 void activate_negative_w(){
-    turn_off_switch_1();
-    turn_on_switch_2();
+    turn_on_switch_1();
+    turn_off_switch_2();
     turn_on_switch_3();
     turn_off_switch_4();
-    turn_on_switch_5();
-    turn_off_switch_6();
+    turn_off_switch_5();
+    turn_on_switch_6();
 }
 // <100>
 void activate_positive_w(){
-    turn_on_switch_1();
-    turn_off_switch_2();
+    turn_off_switch_1();
+    turn_on_switch_2();
     turn_off_switch_3();
     turn_on_switch_4();
-    turn_off_switch_5();
-    turn_on_switch_6();
+    turn_on_switch_5();
+    turn_off_switch_6();
 }
 // <101>
 void activate_negative_v(){
@@ -127,12 +127,12 @@ void activate_negative_v(){
 }
 // <110>
 void activate_negative_u(){
-    turn_on_switch_1();
-    turn_off_switch_2();
+    turn_off_switch_1();
+    turn_on_switch_2();
     turn_on_switch_3();
     turn_off_switch_4();
-    turn_off_switch_5();
-    turn_on_switch_6();
+    turn_on_switch_5();
+    turn_off_switch_6();
 }
 // <000>
 void activate_zero_vector(){

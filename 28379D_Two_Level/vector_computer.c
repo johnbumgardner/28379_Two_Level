@@ -23,47 +23,47 @@ int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
         switch(sector){
             //for the instances where the angle lies on a single vector
             case POSITIVE_U:
-                vectors[0] = 1;
-                break;
-            case POSITIVE_V:
-                vectors[0] = 2;
-                break;
-            case NEGATIVE_W:
-                vectors[0] = 3;
+                vectors[0] = POSITIVE_U;
                 break;
             case POSITIVE_W:
-                vectors[0] = 4;
+                vectors[0] = POSITIVE_W;
                 break;
-            case NEGATIVE_V:
-                vectors[0] = 5;
+            case POSITIVE_V:
+                vectors[0] = POSITIVE_V;
                 break;
             case NEGATIVE_U:
-                vectors[0] = 6;
+                vectors[0] = NEGATIVE_U;
+                break;
+            case NEGATIVE_W:
+                vectors[0] = NEGATIVE_W;
+                break;
+            case NEGATIVE_V:
+                vectors[0] = NEGATIVE_V;
                 break;
             //for angles not along a vector
             case SECTOR_1:
-                vectors[0] = 1;
-                vectors[1] = 3;
+                vectors[0] = POSITIVE_U;
+                vectors[1] = POSITIVE_W;
                 break;
             case SECTOR_2:
-                vectors[0] = 3;
-                vectors[1] = 2;
+                vectors[0] = POSITIVE_W;
+                vectors[1] = POSITIVE_V;
                 break;
             case SECTOR_3:
-                vectors[0] = 2;
-                vectors[1] = 6;
+                vectors[0] = POSITIVE_V;
+                vectors[1] = NEGATIVE_U;
                 break;
             case SECTOR_4:
-                vectors[0] = 6;
-                vectors[1] = 4;
+                vectors[0] = NEGATIVE_U;
+                vectors[1] = NEGATIVE_W;
                 break;
             case SECTOR_5:
-                vectors[0] = 4;
-                vectors[1] = 5;
+                vectors[0] = NEGATIVE_W;
+                vectors[1] = NEGATIVE_V;
                 break;
             case SECTOR_6:
-                vectors[0] = 5;
-                vectors[1] = 1;
+                vectors[0] = NEGATIVE_V;
+                vectors[1] = POSITIVE_U;
                 break;
         }
     }
@@ -72,71 +72,71 @@ int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
         switch(sector){
             //for the instances where the angle lies on a single vector
             case POSITIVE_U:
-                vectors[0] = 1;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_U;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case POSITIVE_V:
-                vectors[0] = 2;
-                vectors[2] = 0;
-                vectors[3] = 7;
-                break;
-            case NEGATIVE_W:
-                vectors[0] = 3;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_W;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case POSITIVE_W:
-                vectors[0] = 4;
-                vectors[2] = 0;
-                vectors[3] = 7;
-                break;
-            case NEGATIVE_V:
-                vectors[0] = 5;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_V;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case NEGATIVE_U:
-                vectors[0] = 6;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = NEGATIVE_U;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
+                break;
+            case NEGATIVE_W:
+                vectors[0] = NEGATIVE_W;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
+                break;
+            case NEGATIVE_V:
+                vectors[0] = NEGATIVE_V;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             //for angles not along a vector
             case SECTOR_1:
-                vectors[0] = 1;
-                vectors[1] = 3;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_U;
+                vectors[1] = POSITIVE_W;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_2:
-                vectors[0] = 3;
-                vectors[1] = 2;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_W;
+                vectors[1] = POSITIVE_V;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_3:
-                vectors[0] = 2;
-                vectors[1] = 6;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = POSITIVE_V;
+                vectors[1] = NEGATIVE_U;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_4:
-                vectors[0] = 6;
-                vectors[1] = 4;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = NEGATIVE_U;
+                vectors[1] = NEGATIVE_W;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_5:
-                vectors[0] = 4;
-                vectors[1] = 5;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = NEGATIVE_W;
+                vectors[1] = NEGATIVE_V;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_6:
-                vectors[0] = 5;
-                vectors[1] = 1;
-                vectors[2] = 0;
-                vectors[3] = 7;
+                vectors[0] = NEGATIVE_V;
+                vectors[1] = POSITIVE_U;
+                vectors[2] = ZERO_VECTOR;
+                vectors[3] = ZERO_VECTOR;
                 break;
             }
         }
@@ -164,7 +164,7 @@ int get_sector(int *angle_ptr){
         sector = POSITIVE_U;
         break;
         case 60:
-        sector = NEGATIVE_W;
+        sector = POSITIVE_W;
         break;
         case 120:
         sector = POSITIVE_V;
@@ -173,7 +173,7 @@ int get_sector(int *angle_ptr){
         sector = NEGATIVE_U;
         break;
         case 240:
-        sector = POSITIVE_W;
+        sector = NEGATIVE_W;
         break;
         case 300:
         sector = NEGATIVE_V;
@@ -278,22 +278,22 @@ int get_lower_angle(int* sector_ptr){
     int lower_angle = 0;
     switch(*sector_ptr){
         case SECTOR_1:
-            lower_angle = 60;
+            lower_angle = 0;
             break;
         case SECTOR_2:
-            lower_angle = 120;
+            lower_angle = 60;
             break;
         case SECTOR_3:
-            lower_angle = 180;
+            lower_angle = 120;
             break;
         case SECTOR_4:
-            lower_angle = 240;
+            lower_angle = 180;
             break;
         case SECTOR_5:
-            lower_angle = 300;
+            lower_angle = 240;
             break;
         case SECTOR_6:
-            lower_angle = 360;
+            lower_angle = 300;
             break;
     }
     return lower_angle;
