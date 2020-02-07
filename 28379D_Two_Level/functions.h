@@ -5,6 +5,9 @@
  * Created on October 10, 2019, 6:01 PM
  */
 
+#include "driverlib.h"
+#include "device.h"
+
 //functions to help the DSP determine what vectors it needs to modulate, and for how long
 int get_sector(int *angle_ptr);
 int* get_modulated_array(int* sector_ptr, int* magnitude_ptr);
@@ -45,7 +48,20 @@ void activate_negative_v();
 void activate_negative_u();
 void activate_zero_vector();
 
+// Function prototypes for the timer interrupts
+__interrupt void cpuTimer0ISR(void);
+__interrupt void cpuTimer1ISR(void);
+__interrupt void cpuTimer2ISR(void);
+void initCPUTimers(void);
+void configCPUTimer(uint32_t, float, float);
 
+// Linked List stuff
+struct Node {
+    int sector;
+    int vectors[4];
+    int percentages[4];
+    struct Node* next;
+};
 
-
-
+struct Node * get_vector_list(int * size);
+struct Node * get_end_node(struct Node * head);

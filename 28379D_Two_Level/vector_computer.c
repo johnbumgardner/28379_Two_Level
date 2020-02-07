@@ -7,6 +7,7 @@
 
 #include "macros.h"
 #include "functions.h"
+#include <stdlib.h>
 
 /*
  * returns an array indicating what vectors need to be modulated to get desired output
@@ -304,4 +305,65 @@ int roundLocal (float d){
         return (int) (d - .5);
     else
         return (int) (d + .5);
+}
+
+/*
+ * Dynamically allocates memory on the heap in the form of
+ * a Linked List to store the duty cycles needed to modulate
+ * for the SVPWM
+ * Accepts the size or subdivision of the SVPWM circle - needed
+ * to generate the Linked List of appropriate size
+ * Returns the pointer to the head node of the linked list.
+ * Currently, the tail node does not point to the head node,
+ * meaning the list is not circular. More computations are
+ * required, so the list should be made circular only before
+ * modulation begins
+ */
+struct Node * get_vector_list(int * size){
+    // Create a pointer to the head of the list
+    struct Node* head = NULL;
+
+    // Dynamically allocate the space of the heap
+    head = (struct Node*)malloc(sizeof(struct Node));
+
+    // Create a new pointer to iterate through the list as we create it
+    struct Node* current = head;
+
+
+    // We've created one of the vector i.e. 0, so go to 1
+    int count = 1;
+
+    // Based on the inputted size parameter, create size many additional nodes
+    while(count < *size + 1) {
+        // Create a new node and dynamically allocate it on the heap.
+        struct Node* new_node= NULL;
+        new_node = (struct Node*)malloc(sizeof(struct Node));
+
+        // Set the current node to point to our newly created node
+        current->next = new_node;
+
+        //Iterate to the next node and increment our counter
+        current = current->next;
+        count++;
+   }
+    // For now we don't want to loop through the list endlessly
+    current->next = NULL;
+
+    //Return the head of the linked list - filled with 0
+    return head;
+}
+
+
+/*
+ * Determines the end node of the a linked list.
+ * Accepts the head of the list
+ * Returns a pointer to the tail of the list.
+ * DO NOT CALL IF THE LINKED LIST IS CIRCULAR
+ */
+struct Node * get_end_node(struct Node * head){
+    struct Node * current = head;
+    while(current -> next != NULL){
+        current = current -> next;
+    }
+    return current;
 }

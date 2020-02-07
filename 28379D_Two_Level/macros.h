@@ -1,3 +1,4 @@
+
 /*
  * File:   macros.h
  * Author: john.bumgardner
@@ -24,3 +25,7 @@
 #define SIZEOFMODULATEDARRAY 4
 
 #define AREA_OF_CIRCLE 360
+#define SECTIONS 36
+
+#define HIGH 1
+#define LOW 0
