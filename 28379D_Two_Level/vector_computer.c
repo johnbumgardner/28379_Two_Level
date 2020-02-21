@@ -8,7 +8,6 @@
 #include "macros.h"
 #include "functions.h"
 #include <stdlib.h>
-
 /*
  * returns an array indicating what vectors need to be modulated to get desired output
  * input1 - pointer to the location of the desired output vector
@@ -16,8 +15,7 @@
  * output - pointer to the top of the vector array
  */
 int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
-    static int vectors[4] = {-1, -1, -1, -1}; //create array to store the modulated PWM vectors
-
+    static int vectors[3] = {-1, -1, -1}; //create array to store the modulated PWM vectors
     int sector = *(sector_ptr); //get the actual value of the sector
     int magnitude = *(magnitude_ptr);
     if(magnitude == 100){
@@ -25,46 +23,64 @@ int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
             //for the instances where the angle lies on a single vector
             case POSITIVE_U:
                 vectors[0] = POSITIVE_U;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case POSITIVE_W:
                 vectors[0] = POSITIVE_W;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case POSITIVE_V:
                 vectors[0] = POSITIVE_V;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case NEGATIVE_U:
                 vectors[0] = NEGATIVE_U;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case NEGATIVE_W:
                 vectors[0] = NEGATIVE_W;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case NEGATIVE_V:
                 vectors[0] = NEGATIVE_V;
+                vectors[1] = UNNEEDED_VECTOR;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             //for angles not along a vector
             case SECTOR_1:
                 vectors[0] = POSITIVE_U;
                 vectors[1] = POSITIVE_W;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case SECTOR_2:
                 vectors[0] = POSITIVE_W;
                 vectors[1] = POSITIVE_V;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case SECTOR_3:
                 vectors[0] = POSITIVE_V;
                 vectors[1] = NEGATIVE_U;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case SECTOR_4:
                 vectors[0] = NEGATIVE_U;
                 vectors[1] = NEGATIVE_W;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case SECTOR_5:
                 vectors[0] = NEGATIVE_W;
                 vectors[1] = NEGATIVE_V;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
             case SECTOR_6:
                 vectors[0] = NEGATIVE_V;
                 vectors[1] = POSITIVE_U;
+                vectors[2] = UNNEEDED_VECTOR;
                 break;
         }
     }
@@ -74,74 +90,68 @@ int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
             //for the instances where the angle lies on a single vector
             case POSITIVE_U:
                 vectors[0] = POSITIVE_U;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case POSITIVE_V:
-                vectors[0] = POSITIVE_W;
+                vectors[0] = POSITIVE_V;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case POSITIVE_W:
-                vectors[0] = POSITIVE_V;
+                vectors[0] = POSITIVE_W;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case NEGATIVE_U:
                 vectors[0] = NEGATIVE_U;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case NEGATIVE_W:
                 vectors[0] = NEGATIVE_W;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case NEGATIVE_V:
                 vectors[0] = NEGATIVE_V;
+                vectors[1] = UNNEEDED_VECTOR;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             //for angles not along a vector
             case SECTOR_1:
                 vectors[0] = POSITIVE_U;
                 vectors[1] = POSITIVE_W;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_2:
                 vectors[0] = POSITIVE_W;
                 vectors[1] = POSITIVE_V;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_3:
                 vectors[0] = POSITIVE_V;
                 vectors[1] = NEGATIVE_U;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_4:
                 vectors[0] = NEGATIVE_U;
                 vectors[1] = NEGATIVE_W;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_5:
                 vectors[0] = NEGATIVE_W;
                 vectors[1] = NEGATIVE_V;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             case SECTOR_6:
                 vectors[0] = NEGATIVE_V;
                 vectors[1] = POSITIVE_U;
                 vectors[2] = ZERO_VECTOR;
-                vectors[3] = ZERO_VECTOR;
                 break;
             }
         }
-    return &vectors[0];
+    return vectors;
 }
 
 
@@ -152,13 +162,16 @@ int* get_modulated_array(int* sector_ptr, int* magnitude_ptr){
  * if the angle lies along a vector, return the 0-5 corresponding to the vector
  * output integer corresponding to the sector, 6-11
  */
-int get_sector(int *angle_ptr){
+int get_sector(double *angle_ptr){
     //correct the angle if it exceeds 360
     int sector;
     int angle = *(angle_ptr);
+
+
     while(angle > 360){
         angle = angle - 360;
     }
+
     //if the angle falls along a vector
     switch(angle){
         case 0:
@@ -214,11 +227,11 @@ int get_sector(int *angle_ptr){
  * Output: pointer to the top of the array containing the percentages
  * Implements an algo to compute amount to be modulated
  */
-int* get_percents_to_modulate(int* top_of_vector_array, int* angle_ptr, int* magnitude_ptr){
+int* get_percents_to_modulate(int* top_of_vector_array, double* angle_ptr, int* magnitude_ptr){
     //get the sector the function is located in
     int sector = get_sector(angle_ptr);
-    static int percentages[4]; //array to store the percentages
-    //dereference the input pointers
+    static int percentages[3]; //array to store the percentages
+    //de-reference the input pointers
     int angle = *angle_ptr;
     int magnitude = *magnitude_ptr;
 
@@ -227,6 +240,12 @@ int* get_percents_to_modulate(int* top_of_vector_array, int* angle_ptr, int* mag
         //get the upper and lower angles for the vector
         int upper_angle = get_upper_angle(&sector);
         int lower_angle = get_lower_angle(&sector);
+
+
+        //basically shift the values correspondingly into the sector 1
+        upper_angle = upper_angle - lower_angle;
+        angle = angle - lower_angle;
+        lower_angle = 0;
 
         int total_percent = 100; //start with 100 and distribute it out
 
@@ -245,11 +264,17 @@ int* get_percents_to_modulate(int* top_of_vector_array, int* angle_ptr, int* mag
         //for when the angle we desire lies along one vector perfectly
         percentages[2] = 100 - magnitude; //sees how long to modulate zero
         percentages[0] = magnitude; //sees how long to modulate the solo state vector
+        percentages[1] = 0;
 
     }
     return percentages;
 }
 
+/*
+ * Get the angle that bounds the sector from above
+ * Accepts the sector as a parameter
+ * Returns the upper angle in degree as a number
+ */
 int get_upper_angle(int* sector_ptr){
     int upper_angle = 0;
     switch(*sector_ptr){
@@ -275,6 +300,11 @@ int get_upper_angle(int* sector_ptr){
     return upper_angle;
 }
 
+/*
+ * Get the angle that bounds the sector from below
+ * Accepts the sector as a parameter
+ * Returns the lower angle in degree as a number
+ */
 int get_lower_angle(int* sector_ptr){
     int lower_angle = 0;
     switch(*sector_ptr){
@@ -307,6 +337,12 @@ int roundLocal (float d){
         return (int) (d + .5);
 }
 
+float round_to_tenths(float d){
+     return (int)(d * 10 + .5) / 10.0;
+
+
+}
+
 /*
  * Dynamically allocates memory on the heap in the form of
  * a Linked List to store the duty cycles needed to modulate
@@ -334,7 +370,7 @@ struct Node * get_vector_list(int * size){
     int count = 1;
 
     // Based on the inputted size parameter, create size many additional nodes
-    while(count < *size + 1) {
+    while(count < *(size) + 1) {
         // Create a new node and dynamically allocate it on the heap.
         struct Node* new_node= NULL;
         new_node = (struct Node*)malloc(sizeof(struct Node));
@@ -355,10 +391,10 @@ struct Node * get_vector_list(int * size){
 
 
 /*
- * Determines the end node of the a linked list.
- * Accepts the head of the list
- * Returns a pointer to the tail of the list.
- * DO NOT CALL IF THE LINKED LIST IS CIRCULAR
+ * Gets the end node of the linked list
+ * Pass the function the head of the list
+ * Returns the end of the list
+ * DO NOT CALL FOR CIRCULAR LIST
  */
 struct Node * get_end_node(struct Node * head){
     struct Node * current = head;

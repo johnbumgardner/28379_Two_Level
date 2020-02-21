@@ -15,28 +15,24 @@
  * Inputs:array of the vectors that it must modulate, along with the percent to spend on each
  * Should run from call to power off condition
  */
-void control_switches(int* top_of_vector_arr, int* top_of_percent_arr){
-   //run until the power turns off
-    //while(1){
-        int i;
-        //during a cycle of 100, spend time on each vector based on how long the percent calls for
-        for(i = 0; i < 100; i++){
-            int timer = 0;
-            int j;
-            for(j = 0; j < SIZEOFMODULATEDARRAY; j++){
-                if(top_of_vector_arr[j] >= 0){ //make sure we want to modulate said vector
-                    while(timer < top_of_percent_arr[j]){
-
-                        //turn on the switches to correspond to current modulating vector
-                        turn_on_switch(&top_of_vector_arr[j]);
-                        timer++;
-                    }
-                    timer = 0; //reset timer
+void control_switches(char* top_of_vector_arr, unsigned char* top_of_percent_arr){
+    int i;
+    //during a cycle of 100, spend time on each vector based on how long the percent calls for
+    for(i = 0; i < 10; i++){
+        int timer = 0;
+        int j;
+        for(j = 0; j < SIZEOFMODULATEDARRAY / 10; j++){
+            if(top_of_vector_arr[j] >= 0){ //make sure we want to modulate said vector
+                while(timer < top_of_percent_arr[j]){
+                    //turn on the switches to correspond to current modulating vector
+                    turn_on_switch(&top_of_vector_arr[j]);
+                    timer++;
                 }
+            timer = 0; //reset timer
             }
-            turn_off_switches();
         }
-    //}
+        turn_off_switches();
+    }
 }
 
 /*
@@ -44,7 +40,7 @@ void control_switches(int* top_of_vector_arr, int* top_of_percent_arr){
  * Input - pointer to a given state vector we wish the hardware to exhibit
  *
  */
-void turn_on_switch(int* vector_ptr){
+void turn_on_switch(char* vector_ptr){
     int vector = *vector_ptr;
     switch(vector){
         case POSITIVE_U: //+U

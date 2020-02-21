@@ -18,7 +18,7 @@ uint16_t cpuTimer0IntCount;
 uint16_t cpuTimer1IntCount;
 uint16_t cpuTimer2IntCount;
 
-extern volatile unsigned int iterate_flag;
+extern volatile unsigned int iterations_needed;
 
 
 //
@@ -124,7 +124,7 @@ void configCPUTimer(uint32_t cpuTimer, float freq, float period)
 __interrupt void cpuTimer0ISR(void)
 {
     cpuTimer0IntCount++;
-    iterate_flag = HIGH;
+    iterations_needed++;
     //
     // Acknowledge this interrupt to receive more interrupts from group 1
     //
@@ -153,6 +153,19 @@ __interrupt void cpuTimer2ISR(void)
     cpuTimer2IntCount++;
 }
 
-//
-// End of File
-//
+int get_interrupt_time(long* switching){
+    unsigned int freq = *switching;
+    return (double)1 / freq * 1000000;
+}
+
+
+int get_divisions(long* switching, long* fundamental){
+    unsigned int interrupt_time = get_interrupt_time(switching);
+    unsigned int fundamental_time = (int)((double)1 / (*fundamental) * 1000000);
+    return (fundamental_time / interrupt_time) + 1;
+}
+
+double get_differential_angle(long* switching, long* fundamental){
+    int divs = get_divisions(switching, fundamental);
+    return AREA_OF_CIRCLE / (double)divs;
+}

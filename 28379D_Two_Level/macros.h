@@ -22,10 +22,11 @@
 
 #define ZERO_VECTOR 7
 
-#define SIZEOFMODULATEDARRAY 4
+#define SIZEOFMODULATEDARRAY 3
 
 #define AREA_OF_CIRCLE 360
-#define SECTIONS 36
 
 #define HIGH 1
 #define LOW 0
+
+#define UNNEEDED_VECTOR -1
