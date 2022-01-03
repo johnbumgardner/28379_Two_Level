@@ -38,6 +38,6 @@ This current build is for RAM only - primarily what I use to test and debug on t
 
 ## Meta
 
-John Bumgardner – [My Twitter](https://twitter.com/JohnBumgardner5) – john.bumgardner@icloud.com
+
 
 [https://github.com/johnbumgardner/github-link](https://github.com/johnbumgardner)
